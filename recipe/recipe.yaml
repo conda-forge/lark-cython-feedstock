@@ -4,6 +4,7 @@ schema_version: 1
 context:
   version: 0.0.17
   lark_min: 1.1.7
+  cython_version: ">=3.0,<3.1"
 
 package:
   name: lark-cython
@@ -14,7 +15,7 @@ source:
   sha256: a311c4dba35a8bc19f623ec6829ff5421d7ff493ea1a64f591a29fb08d90e884
 
 build:
-  number: 0
+  number: 1
   script:
     - ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
 
@@ -22,8 +23,13 @@ requirements:
   build:
     - ${{ compiler("c") }}
     - ${{ stdlib("c") }}
+    - if: target_plaform != build_platform
+      then:
+        - cross-python_${{ target_platform }}
+        - cython ${{ cython_version }}
+        - python
   host:
-    - cython >=3.0,<3.1
+    - cython ${{ cython_version }}
     - pip
     - python
     - setuptools
