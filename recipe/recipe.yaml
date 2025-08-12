@@ -23,17 +23,17 @@ requirements:
   build:
     - ${{ compiler("c") }}
     - ${{ stdlib("c") }}
-    - if: target_plaform != build_platform
+    - if: build_platform != target_platform
       then:
         - cross-python_${{ target_platform }}
         - cython ${{ cython_version }}
         - python
+        - setuptools
   host:
     - cython ${{ cython_version }}
     - pip
     - python
     - setuptools
-    - wheel
   run:
     - lark >=${{ lark_min }}
     - python
